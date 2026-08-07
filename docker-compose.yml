@@ -1,0 +1,19 @@
+services:
+
+  minecraft:
+
+    build: .
+
+    container_name: minecraft-server
+
+    restart: unless-stopped
+
+    ports:
+      - "25565:25565"
+
+    env_file:
+      - .env
+
+    volumes:
+      - ./data:/data
+      - ./runtime:/runtime
