@@ -2,6 +2,9 @@
 
 set -e
 
+. /usr/local/bin/scripts/lib/log.sh
+. /usr/local/bin/scripts/lib/common.sh
+
 #########################################
 # Constants
 #########################################
@@ -11,8 +14,11 @@ METADATA_FILE="/runtime/metadata.json"
 #########################################
 # Main
 #########################################
+require_env "SERVER_NAME"
+require_env "MC_VERSION"
 
-mkdir -p /runtime
+# mkdir -p /runtime
+ensure_directories
 
 cat > "${METADATA_FILE}" << EOF
 {
@@ -23,4 +29,4 @@ cat > "${METADATA_FILE}" << EOF
 }
 EOF
 
-echo "Metadata generated."
+log_info "Metadata generated."

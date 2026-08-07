@@ -2,148 +2,50 @@
 
 set -e
 
-#########################################
-# Constants
-#########################################
-
-PAPER_DIR="/runtime"
-PAPER_JAR="${PAPER_DIR}/paper.jar"
-VERSION_FILE="${PAPER_DIR}/version.txt"
-
-#########################################
-# Functions
-#########################################
-
-get_latest_build() {
-
-    curl -s \
-        "https://fill.papermc.io/v3/projects/paper/versions/${MC_VERSION}" \
-    | jq -r '.builds[0]'
-
-}
-
-get_download_url() {
-
-    BUILD="$1"
-
-    curl -s \
-        "https://fill.papermc.io/v3/projects/paper/versions/${MC_VERSION}/builds/${BUILD}" \
-    | jq -r '.downloads["server:default"].url'
-
-}
-
-download_paper() {
-
-    BUILD="$1"
-
-    URL=$(get_download_url "$BUILD")
-
-    echo "Downloading Paper ${MC_VERSION} (Build ${BUILD})"
-
-    curl \
-        --fail \
-        --location \
-        --silent \
-        --show-error \
-        "$URL" \
-        -o "$PAPER_JAR"
-
-}
-
-validate_jar() {
-
-    if ! jar tf "$PAPER_JAR" >/dev/null 2>&1; then
-
-        echo "Downloaded file is not a valid JAR."
-
-        rm -f "$PAPER_JAR"
-
-        exit 1
-
-    fi
-
-}
-
-needs_update() {
-
-    BUILD="$1"
-
-    if [ ! -f "${VERSION_FILE}" ]; then
-        return 0
-    fi
-
-    CURRENT=$(cat "${VERSION_FILE}")
-
-    EXPECTED="${MC_VERSION}:${BUILD}"
-
-    [ "${CURRENT}" != "${EXPECTED}" ]
-
-}
-
-get_download_sha256() {
-
-    BUILD="$1"
-
-    curl -s \
-        "https://fill.papermc.io/v3/projects/paper/versions/${MC_VERSION}/builds/${BUILD}" \
-    | jq -r '.downloads["server:default"].checksums.sha256'
-
-}
-
-verify_checksum() {
-
-    BUILD="$1"
-
-    EXPECTED=$(get_download_sha256 "$BUILD")
-
-    ACTUAL=$(sha256sum "$PAPER_JAR" | awk '{print $1}')
-
-    if [ "$EXPECTED" != "$ACTUAL" ]; then
-
-        echo "Checksum verification failed."
-
-        echo "Expected : $EXPECTED"
-        echo "Actual   : $ACTUAL"
-
-        rm -f "$PAPER_JAR"
-
-        exit 1
-
-    fi
-
-    echo "Checksum verified."
-
-}
-
-save_version() {
-
-    BUILD="$1"
-
-    echo "${MC_VERSION}:${BUILD}" > "${VERSION_FILE}"
-
-}
-
-#########################################
-# Main
-#########################################
+. /usr/local/bin/scripts/lib/log.sh
+. /usr/local/bin/scripts/lib/common.sh
+. /usr/local/bin/scripts/lib/paper.sh
 
 main() {
 
-    mkdir -p "$PAPER_DIR"
+    log_info "Starting PaperMC download process..."
 
-    BUILD=$(get_latest_build)
+    require_env "MC_VERSION"
 
-    if needs_update "$BUILD"; then
+    ensure_directories
 
-        download_paper "$BUILD"
+    LATEST_BUILD=$(get_latest_build)
+    
+    if [ -z "$LATEST_BUILD" ] || [ "$LATEST_BUILD" = "null" ]; then
 
-        verify_checksum "$BUILD"
+        fail "Failed to retrieve latest Paper build."
 
-        save_version "$BUILD"
+    fi
+
+    BUILD_METADATA=$(fetch_build_metadata "$LATEST_BUILD")
+
+
+    # printf '%s\n' "$BUILD_METADATA" | jq .
+    DOWNLOAD_URL=$(get_download_url "$BUILD_METADATA")
+    # DOWNLOAD_URL=$(printf '%s\n' "$BUILD_METADATA" | jq -r '.downloads["server:default"].url')
+
+    CHECKSUM=$(get_download_checksum "$BUILD_METADATA")
+    # CHECKSUM=$(printf '%s\n' "$BUILD_METADATA" | jq -r '.downloads["server:default"].checksums.sha256')
+
+    if needs_update "$LATEST_BUILD"; then
+
+        download_paper "$DOWNLOAD_URL"
+        verify_checksum \
+            "$PAPER_JAR" \
+            "$CHECKSUM"
+
+        save_version "$LATEST_BUILD"
+
+        log_info "PaperMC updated successfully."
 
     else
 
-        echo "PaperMC already up to date."
+        log_info "PaperMC is already up to date."
 
     fi
 

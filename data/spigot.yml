@@ -48,11 +48,11 @@ advancements:
 world-settings:
   default:
     below-zero-generation-in-existing-chunks: true
+    view-distance: default
+    simulation-distance: default
     merge-radius:
       item: 0.5
       exp: -1.0
-    view-distance: default
-    simulation-distance: default
     mob-spawn-range: 8
     item-despawn-rate: 6000
     arrow-despawn-rate: 1200
