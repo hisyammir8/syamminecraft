@@ -1,43 +1,43 @@
-[00:41:07] [ServerMain/INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.11+10-LTS; Eclipse Adoptium Temurin-21.0.11+10) on Linux 6.12.54-linuxkit (aarch64)
-[00:41:07] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21.8-60-main@29c8822 (2025-09-06T21:49:13Z) for Minecraft 1.21.8
-[00:41:07] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
-[00:41:08] [ServerMain/INFO]: [PluginInitializerManager] Initialized 0 plugins
-[00:41:10] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
-[00:41:11] [ServerMain/INFO]: Loaded 1407 recipes
-[00:41:11] [ServerMain/INFO]: Loaded 1520 advancements
-[00:41:11] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
-[00:41:11] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 186.7ms
-[00:41:11] [Server thread/INFO]: Starting minecraft server version 1.21.8
-[00:41:11] [Server thread/WARN]: ****************************
-[00:41:11] [Server thread/WARN]: YOU ARE RUNNING THIS SERVER AS AN ADMINISTRATIVE OR ROOT USER. THIS IS NOT ADVISED.
-[00:41:11] [Server thread/WARN]: YOU ARE OPENING YOURSELF UP TO POTENTIAL RISKS WHEN DOING THIS.
-[00:41:11] [Server thread/WARN]: FOR MORE INFORMATION, SEE https://madelinemiller.dev/blog/root-minecraft-server/
-[00:41:11] [Server thread/WARN]: ****************************
-[00:41:11] [Server thread/INFO]: Loading properties
-[00:41:11] [Server thread/INFO]: This server is running Paper version 1.21.8-60-main@29c8822 (2025-09-06T21:49:13Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
-[00:41:11] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
-[00:41:11] [Server thread/INFO]: Server Ping Player Sample Count: 12
-[00:41:11] [Server thread/INFO]: Using 4 threads for Netty based IO
-[00:41:11] [Server thread/INFO]: [MoonriseCommon] Paper is using 1 worker threads, 1 I/O threads
-[00:41:11] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
-[00:41:12] [Server thread/INFO]: Default game type: SURVIVAL
-[00:41:12] [Server thread/INFO]: Generating keypair
-[00:41:12] [Server thread/INFO]: Starting Minecraft server on *:25565
-[00:41:12] [Server thread/INFO]: Using epoll channel type
-[00:41:12] [Server thread/INFO]: Paper: Using libdeflate (Linux aarch64) compression from Velocity.
-[00:41:12] [Server thread/INFO]: Paper: Using OpenSSL 3.x.x (Linux aarch64) cipher from Velocity.
-[00:41:12] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
-[00:41:12] [Server thread/INFO]: Preparing level "world"
-[00:41:12] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
-[00:41:12] [Server thread/INFO]: Preparing spawn area: 0%
-[00:41:12] [Server thread/INFO]: Time elapsed: 258 ms
-[00:41:12] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
-[00:41:12] [Server thread/INFO]: Preparing spawn area: 0%
-[00:41:12] [Server thread/INFO]: Time elapsed: 102 ms
-[00:41:12] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
-[00:41:12] [Server thread/INFO]: Preparing spawn area: 0%
-[00:41:13] [Server thread/INFO]: Time elapsed: 281 ms
-[00:41:13] [Server thread/INFO]: [spark] Starting background profiler...
-[00:41:13] [Server thread/INFO]: Done preparing level "world" (1.192s)
-[00:41:13] [Server thread/INFO]: Running delayed init tasks
-[00:41:13] [Server thread/INFO]: Done (5.955s)! For help, type "help"
+[04:12:55] [ServerMain/INFO]: [bootstrap] Running Java 21 (OpenJDK 64-Bit Server VM 21.0.11+10-LTS; Eclipse Adoptium Temurin-21.0.11+10) on Linux 6.12.54-linuxkit (aarch64)
+[04:12:55] [ServerMain/INFO]: [bootstrap] Loading Paper 1.21.8-60-main@29c8822 (2025-09-06T21:49:13Z) for Minecraft 1.21.8
+[04:12:55] [ServerMain/INFO]: [PluginInitializerManager] Initializing plugins...
+[04:12:55] [ServerMain/INFO]: [PluginInitializerManager] Initialized 0 plugins
+[04:12:57] [ServerMain/INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, name=PROD]
+[04:12:58] [ServerMain/INFO]: Loaded 1407 recipes
+[04:12:58] [ServerMain/INFO]: Loaded 1520 advancements
+[04:12:58] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[04:12:58] [ServerMain/INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 164.0ms
+[04:12:58] [Server thread/INFO]: Starting minecraft server version 1.21.8
+[04:12:58] [Server thread/WARN]: ****************************
+[04:12:58] [Server thread/WARN]: YOU ARE RUNNING THIS SERVER AS AN ADMINISTRATIVE OR ROOT USER. THIS IS NOT ADVISED.
+[04:12:58] [Server thread/WARN]: YOU ARE OPENING YOURSELF UP TO POTENTIAL RISKS WHEN DOING THIS.
+[04:12:58] [Server thread/WARN]: FOR MORE INFORMATION, SEE https://madelinemiller.dev/blog/root-minecraft-server/
+[04:12:58] [Server thread/WARN]: ****************************
+[04:12:58] [Server thread/INFO]: Loading properties
+[04:12:58] [Server thread/INFO]: This server is running Paper version 1.21.8-60-main@29c8822 (2025-09-06T21:49:13Z) (Implementing API version 1.21.8-R0.1-SNAPSHOT)
+[04:12:58] [Server thread/INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[04:12:58] [Server thread/INFO]: Server Ping Player Sample Count: 12
+[04:12:58] [Server thread/INFO]: Using 4 threads for Netty based IO
+[04:12:59] [Server thread/INFO]: [MoonriseCommon] Paper is using 1 worker threads, 1 I/O threads
+[04:12:59] [Server thread/INFO]: [ChunkTaskScheduler] Chunk system is using population gen parallelism: true
+[04:12:59] [Server thread/INFO]: Default game type: SURVIVAL
+[04:12:59] [Server thread/INFO]: Generating keypair
+[04:12:59] [Server thread/INFO]: Starting Minecraft server on *:25565
+[04:12:59] [Server thread/INFO]: Using epoll channel type
+[04:12:59] [Server thread/INFO]: Paper: Using libdeflate (Linux aarch64) compression from Velocity.
+[04:12:59] [Server thread/INFO]: Paper: Using OpenSSL 3.x.x (Linux aarch64) cipher from Velocity.
+[04:12:59] [Server thread/INFO]: Server permissions file permissions.yml is empty, ignoring it
+[04:12:59] [Server thread/INFO]: Preparing level "world"
+[04:12:59] [Server thread/INFO]: Preparing start region for dimension minecraft:overworld
+[04:13:00] [Server thread/INFO]: Preparing spawn area: 0%
+[04:13:00] [Server thread/INFO]: Time elapsed: 289 ms
+[04:13:00] [Server thread/INFO]: Preparing start region for dimension minecraft:the_nether
+[04:13:00] [Server thread/INFO]: Preparing spawn area: 0%
+[04:13:00] [Server thread/INFO]: Time elapsed: 91 ms
+[04:13:00] [Server thread/INFO]: Preparing start region for dimension minecraft:the_end
+[04:13:00] [Server thread/INFO]: Preparing spawn area: 0%
+[04:13:00] [Server thread/INFO]: Time elapsed: 271 ms
+[04:13:00] [Server thread/INFO]: [spark] Starting background profiler...
+[04:13:00] [Server thread/INFO]: Done preparing level "world" (1.099s)
+[04:13:00] [Server thread/INFO]: Running delayed init tasks
+[04:13:00] [Server thread/INFO]: Done (5.664s)! For help, type "help"

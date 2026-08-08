@@ -1,10 +1,10 @@
 {
-    "pid": 66,
+    "pid": 68,
     "running": true,
-    "uptime": 202,
+    "uptime": 40,
     "restartCount": 0,
     "exitCode": 0,
-    "lastStarted": "2026-08-08T17:41:06Z",
+    "lastStarted": "2026-08-08T21:12:54Z",
     "lastStopped": "",
-    "lastUpdated": "2026-08-08T17:44:28Z"
+    "lastUpdated": "2026-08-08T21:13:34Z"
 }

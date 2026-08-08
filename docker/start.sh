@@ -20,6 +20,16 @@ start_runtime_services() {
 
 }
 
+handle_shutdown_signal() {
+
+    log_info "Shutdown signal received."
+
+    cleanup
+
+    exit 0
+
+}
+
 main() {
 
     log_info "================================="
@@ -42,21 +52,24 @@ main() {
 
     /bin/sh /usr/local/bin/scripts/configure-server.sh
 
+    # trap handle_shutdown_signal TERM INT
+
+    register_signal_handlers
+
     if bootstrap_required; then
 
         bootstrap_server
 
     fi
     
-
     echo "eula=true" > "${DATA_DIR}/eula.txt"
 
-    register_signal_handlers
+    # register_signal_handlers
 
     start_server
 
     wait_for_server
-
+    
     cleanup
 
 }

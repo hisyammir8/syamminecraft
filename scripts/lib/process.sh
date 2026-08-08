@@ -34,7 +34,7 @@ start_minecraft_server() {
     wait_until_server_ready
 
     log_info "Step 3"
-    save_server_pid "$SERVER_PID"
+    # save_server_pid "$SERVER_PID"
 
     save_server_started_time
     log_info "Step 4"
@@ -81,6 +81,10 @@ wait_process_exit() {
 
     PID="$1"
 
+    if ! is_process_running "$PID"; then
+        return 0
+    fi
+
     wait "$PID"
 
 }
@@ -88,7 +92,12 @@ wait_process_exit() {
 register_signal_handlers() {
 
     # trap shutdown_server TERM INT
-    trap shutdown_handler TERM INT
+    # trap shutdown_handler TERM INT
+
+    log_info "Registering signal handlers..."
+
+    trap handle_shutdown_signal TERM
+    trap handle_shutdown_signal INT
 
 }
 
@@ -195,10 +204,15 @@ cleanup() {
 
     # rm -f "$SERVER_STDIN"
     # rm -f "$SERVER_PID_FILE"
+
     log_info "Cleaning runtime..."
+    stop_runtime_services
+
+    stop_minecraft_server
 
     remove_server_pid
     set_server_state "$STATE_STOPPED"
+
     # clear_server_state
 
 }
@@ -277,11 +291,11 @@ is_server_ready() {
 
 }
 
-shutdown_handler() {
+handle_shutdown_signal() {
 
     log_warn "Shutdown signal received."
 
-    stop_server
+    # stop_server
 
     cleanup
 
@@ -293,7 +307,7 @@ is_server_running() {
 
     PID=$(get_server_pid) || return 1
 
-    kill -0 "$PID" 2>/dev/null
+    is_process_running "$PID"
 
 }
 
@@ -525,5 +539,45 @@ get_load_average() {
         printf "%s %s %s", $1, $2, $3
     }
     ' /proc/loadavg
+
+}
+
+is_process_running() {
+
+    PID="$1"
+
+    [ -n "$PID" ] || return 1
+
+    kill -0 "$PID" 2>/dev/null
+
+}
+
+terminate_process() {
+
+    PID="$1"
+
+    [ -n "$PID" ] || return 0
+
+    if ! is_process_running "$PID"; then
+        return 0
+    fi
+
+    log_info "Sending SIGTERM to process $PID"
+
+    kill "$PID"
+
+}
+
+stop_minecraft_server() {
+
+    if ! is_server_running; then
+        return 0
+    fi
+
+    PID=$(get_server_pid)
+
+    log_info "Stopping Minecraft server..."
+
+    terminate_process "$PID"
 
 }

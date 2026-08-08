@@ -43,6 +43,18 @@ stop_service() {
 
 }
 
+stop_runtime_services() {
+
+    log_info "Stopping runtime services..."
+
+    stop_service metrics
+
+    # stop_service watchdog
+
+    # stop_service backup
+
+}
+
 restart_service() {
 
     SERVICE_NAME="$1"
@@ -90,13 +102,7 @@ remove_service_pid() {
 
 }
 
-terminate_process() {
 
-    PID="$1"
-
-    kill "$PID"
-
-}
 
 wait_process_exit() {
 
