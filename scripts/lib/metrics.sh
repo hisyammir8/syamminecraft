@@ -38,7 +38,7 @@ initialize_server_metrics() {
 
     [ -f "$SERVER_METRICS" ] && return
 
-    cat > "$SERVER_METRICS" <<EOF
+    atomic_write "$SERVER_METRICS" <<EOF
 {
     "status": "unknown",
     "version": "",
@@ -59,7 +59,7 @@ initialize_system_metrics() {
 
     [ -f "$SYSTEM_METRICS" ] && return
 
-    cat > "$SYSTEM_METRICS" <<EOF
+    atomic_write "$SYSTEM_METRICS" <<EOF
 {
     "cpuUsage": 0,
     "memoryUsedMB": 0,
@@ -77,7 +77,7 @@ initialize_process_metrics() {
 
     [ -f "$PROCESS_METRICS" ] && return
 
-    cat > "$PROCESS_METRICS" <<EOF
+    atomic_write "$PROCESS_METRICS" <<EOF
 {
     "pid": 0,
     "running": false,
@@ -161,7 +161,7 @@ write_system_metrics() {
     load5="$7"
     load15="$8"
 
-    cat > "$SYSTEM_METRICS" <<EOF
+    atomic_write "$SYSTEM_METRICS" <<EOF
 {
     "cpuUsage": $cpuUsage,
     "memoryUsedMB": $memoryUsedMB,
@@ -209,7 +209,7 @@ write_process_metrics() {
 
     UPTIME="$3"
 
-    cat > "$PROCESS_METRICS" <<EOF
+    atomic_write "$PROCESS_METRICS" <<EOF
 {
     "pid": $PID,
     "running": $RUNNING,

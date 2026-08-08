@@ -100,6 +100,14 @@ CACHE_DIR="${RUNTIME_DIR}/cache"
 CPU_SNAPSHOT_FILE="${CACHE_DIR}/cpu.snapshot"
 
 #########################################
+# Services
+#########################################
+
+SERVICES_DIR="${RUNTIME_DIR}/services"
+
+METRICS_INTERVAL="${METRICS_INTERVAL:-30}"
+
+#########################################
 # Helper
 #########################################
 
@@ -125,6 +133,7 @@ ensure_directories() {
     mkdir -p "$BIN_DIR"
     mkdir -p "$METRICS_DIR"
     mkdir -p "$CACHE_DIR"
+    mkdir -p "$SERVICES_DIR"
 }
 
 fail() {
@@ -199,5 +208,17 @@ is_server_state() {
     CURRENT=$(get_server_state 2>/dev/null) || return 1
 
     [ "$CURRENT" = "$EXPECTED" ]
+
+}
+
+atomic_write() {
+
+    FILE="$1"
+
+    TMP_FILE="${FILE}.tmp"
+
+    cat > "$TMP_FILE"
+
+    mv "$TMP_FILE" "$FILE"
 
 }
