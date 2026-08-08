@@ -14,4 +14,11 @@ WORKDIR /data
 
 EXPOSE 25565
 
+HEALTHCHECK \
+    --interval=30s \
+    --timeout=10s \
+    --start-period=90s \
+    --retries=3 \
+    CMD ["/usr/local/bin/scripts/health-check.sh"]
+
 ENTRYPOINT ["/bin/sh", "/usr/local/bin/start.sh"]

@@ -16,6 +16,7 @@ METADATA_FILE="/runtime/metadata.json"
 #########################################
 require_env "SERVER_NAME"
 require_env "MC_VERSION"
+require_env "STARTUP_TIMEOUT"
 
 # mkdir -p /runtime
 ensure_directories
