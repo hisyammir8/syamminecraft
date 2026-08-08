@@ -44,7 +44,7 @@ main() {
 
     /bin/sh /usr/local/bin/scripts/download-paper.sh
 
-    # /bin/sh /usr/local/bin/scripts/download-mcrcon.sh #PENDING
+    /bin/sh /usr/local/bin/scripts/download-mcrcon.sh #PENDING
 
     /bin/sh /usr/local/bin/scripts/metadata.sh
 

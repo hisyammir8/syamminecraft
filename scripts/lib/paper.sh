@@ -1,3 +1,9 @@
+#!/bin/sh
+
+set -e
+
+. /usr/local/bin/scripts/lib/rcon.sh
+
 get_latest_build() {
 
     curl -s \
@@ -100,5 +106,21 @@ fetch_build_metadata() {
 
     curl -s \
         "https://fill.papermc.io/v3/projects/paper/versions/${MC_VERSION}/builds/${LATEST_BUILD}"
+
+}
+
+save_world() {
+
+    log_info "Saving world..."
+
+    rcon_command "save-all"
+
+}
+
+stop_world() {
+
+    log_info "Stopping server via RCON..."
+
+    rcon_command "stop"
 
 }

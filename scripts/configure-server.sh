@@ -17,8 +17,13 @@ main() {
     update_from_env "max-players" "MAX_PLAYERS"
     update_from_env "difficulty" "DIFFICULTY"
     update_from_env "online-mode" "ONLINE_MODE"
-    update_from_env "enable-rcon" "ENABLE_RCON"
-    update_from_env "rcon.port" "RCON_PORT"
-    update_from_env "rcon.password" "RCON_PASSWORD"
+    # update_from_env "enable-rcon" "ENABLE_RCON"
+    # update_from_env "rcon.port" "RCON_PORT"
+    # update_from_env "rcon.password" "RCON_PASSWORD"
+
+    # configure_server
+
+    configure_rcon
 
 }
+main "$@"

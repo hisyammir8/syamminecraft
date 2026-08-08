@@ -5,6 +5,8 @@ set -e
 . /usr/local/bin/scripts/lib/communication.sh
 . /usr/local/bin/scripts/lib/log.sh
 . /usr/local/bin/scripts/lib/common.sh
+. /usr/local/bin/scripts/lib/rcon.sh
+. /usr/local/bin/scripts/lib/paper.sh
 
 SERVER_PID=""
 
@@ -238,7 +240,6 @@ bootstrap_server() {
     # start_java_server
     start_minecraft_server #DONE
 
-    
     wait_until_bootstrap_ready
 
     stop_bootstrap_server
@@ -576,8 +577,43 @@ stop_minecraft_server() {
 
     PID=$(get_server_pid)
 
-    log_info "Stopping Minecraft server..."
+    # log_info "Stopping Minecraft server..."
 
-    terminate_process "$PID"
+    # terminate_process "$PID"
+    if is_rcon_available; then
 
+        save_world
+
+        stop_world
+
+        wait_process_exit "$PID"
+
+    fi
+
+    if ! wait_server_shutdown; then
+
+        log_warn "Graceful shutdown failed. Falling back to SIGTERM."
+
+        terminate_process "$PID"
+
+    fi
+
+}
+
+wait_server_shutdown() {
+
+    TIMEOUT=30
+
+    while [ "$TIMEOUT" -gt 0 ]
+    do
+        if ! is_server_running; then
+            return 0
+        fi
+
+        sleep 1
+
+        TIMEOUT=$((TIMEOUT - 1))
+    done
+
+    return 1
 }

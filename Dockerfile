@@ -1,8 +1,11 @@
 FROM eclipse-temurin:21-jre
 
 RUN apt-get update && \
-    apt-get install -y curl jq && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends \
+        curl \
+        jq \
+        unzip \
+    && rm -rf /var/lib/apt/lists/*
 
 COPY docker/start.sh /usr/local/bin/start.sh
 COPY scripts/ /usr/local/bin/scripts/

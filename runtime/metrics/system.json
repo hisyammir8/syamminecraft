@@ -1,13 +1,13 @@
 {
-    "cpuUsage": 3.94,
-    "memoryUsedMB": 1851,
+    "cpuUsage": 7.78,
+    "memoryUsedMB": 1994,
     "memoryTotalMB": 3919,
-    "diskUsedMB": 218552,
+    "diskUsedMB": 218949,
     "diskTotalMB": 233753,
     "loadAverage":  {
-        "1m": 1.12,
-        "5m": 1.25,
-        "15m": 1.36
+        "1m": 0.88,
+        "5m": 0.47,
+        "15m": 0.58
     },
-    "lastUpdated": "2026-08-08T21:13:34Z"
+    "lastUpdated": "2026-08-08T23:39:59Z"
 }

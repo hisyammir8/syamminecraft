@@ -1,14 +1,63 @@
+#!/bin/sh
+
+set -e
+
+. /usr/local/bin/scripts/lib/log.sh
+. /usr/local/bin/scripts/lib/common.sh
+
+
+is_rcon_enabled() {
+
+    [ "$ENABLE_RCON" = "true" ]
+
+}
+
+is_rcon_available() {
+
+    rcon_command "list" >/dev/null 2>&1
+
+}
+
+build_rcon_arguments() {
+
+    echo \
+        -H "$RCON_HOST" \
+        -P "$RCON_PORT" \
+        -p "$RCON_PASSWORD"
+
+}
+
+# execute_rcon() {
+
+#     "$MCRCON_BIN" "$@"
+
+#     return $?
+
+# }
+
+rcon_command() {
+
+    COMMAND="$1"
+
+    rcon_execute \
+        "$COMMAND"
+
+}
+
 rcon_execute() {
 
     COMMAND="$1"
 
-    execute_rcon_provider "$COMMAND"
+    execute_rcon_provider \
+        $(build_rcon_arguments) \
+        "$COMMAND"
 
 }
 
 execute_rcon_provider() {
 
-    fail "Not implemented."
+    # fail "Not implemented."
+    "$MCRCON_BIN" "$@"
 
 }
 
@@ -64,8 +113,9 @@ verify_binary() {
     [ -x "$MCRCON_BIN" ] \
         || fail "mcrcon binary is not executable."
 
-    "$MCRCON_BIN" --help >/dev/null 2>&1 \
-        || fail "Unable to execute mcrcon."
+    if ! "$MCRCON_BIN" -h >/dev/null; then
+        fail "Unable to execute mcrcon."
+    fi
 
     log_info "mcrcon binary verified."
 
@@ -73,53 +123,40 @@ verify_binary() {
 
 install_binary() {
 
-    # URL="$1"
-
-    # log_info "Downloading mcrcon..."
-
-    # curl \
-    #     --fail \
-    #     --location \
-    #     --silent \
-    #     --show-error \
-    #     "$URL" \
-    #     -o "$MCRCON_BIN"
-
-    ARCH=$(get_runtime_architecture)
+    ARCH="$1"
 
     case "$ARCH" in
-
         amd64)
-
-            install_prebuilt_binary
-
+            install_prebuilt_binary "$ARCH"
             ;;
-
         arm64)
-
             install_compiled_binary
-
             ;;
-
         *)
-
             fail "Unsupported architecture."
-
             ;;
-
     esac
 
 }
 
 install_prebuilt_binary() {
 
-    fail "Not implemented."
+    ARCH="$1"
+
+    URL=$(get_download_url "$ARCH")
+
+    download_archive "$URL"
+
+    extract_archive
+
+    install_binary_file
 
 }
 
 install_compiled_binary() {
 
-    fail "Not implemented."
+    fail \
+        "Compiling mcrcon is not implemented yet."
 
 }
 
@@ -127,6 +164,67 @@ get_download_url() {
 
     ARCH="$1"
 
-    echo "https://...."
+    case "$ARCH" in
+        amd64)
+            echo "https://github.com/Tiiffi/mcrcon/releases/download/v0.7.2/mcrcon-0.7.2-linux-x86-64-static.zip"
+            ;;
+        *)
+            return 1
+            ;;
+    esac
+
+}
+
+download_archive() {
+
+    URL="$1"
+
+    log_info "Downloading mcrcon..."
+
+    curl \
+        --fail \
+        --location \
+        --silent \
+        --show-error \
+        "$URL" \
+        -o "$CACHE_DIR/mcrcon.zip"
+
+}
+
+extract_archive() {
+
+    log_info "Extracting mcrcon..."
+
+    unzip \
+        -o \
+        "$CACHE_DIR/mcrcon.zip" \
+        -d "$CACHE_DIR"
+
+}
+
+install_binary_file() {
+
+    log_info "Installing mcrcon..."
+
+    BINARY_PATH=$(
+        find "$CACHE_DIR" \
+            -type f \
+            -name mcrcon \
+            | head -n 1
+    )
+
+    [ -n "$BINARY_PATH" ] \
+        || fail "mcrcon binary not found."
+
+    mv \
+        "$BINARY_PATH" \
+        "$MCRCON_BIN"
+
+}
+
+cleanup_archive() {
+
+    rm -f \
+        "$CACHE_DIR/mcrcon.zip"
 
 }

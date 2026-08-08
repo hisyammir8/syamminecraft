@@ -17,9 +17,9 @@ main() {
 
     if needs_update; then
 
-        # ARCH=$(get_runtime_architecture)
-        URL=$(get_download_url "$ARCH")
-        install_binary "$URL"
+        ARCH=$(get_runtime_architecture)
+        # URL=$(get_download_url "$ARCH")
+        install_binary "$ARCH"
 
         chmod +x "$MCRCON_BIN"
 

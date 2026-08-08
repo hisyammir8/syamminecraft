@@ -15,6 +15,24 @@ update_property() {
 
 }
 
+configure_rcon() {
+
+  log_info "Configuring RCON..."
+
+    update_property \
+        enable-rcon \
+        true
+
+    update_property \
+        rcon.port \
+        "$RCON_PORT"
+
+    update_property \
+        rcon.password \
+        "$RCON_PASSWORD"
+
+}
+
 require_server_properties() {
 
     if [ ! -f "$SERVER_PROPERTIES" ]; then
