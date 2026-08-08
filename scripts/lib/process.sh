@@ -3,6 +3,8 @@
 set -e
 
 . /usr/local/bin/scripts/lib/communication.sh
+. /usr/local/bin/scripts/lib/log.sh
+. /usr/local/bin/scripts/lib/common.sh
 
 SERVER_PID=""
 
@@ -25,15 +27,25 @@ start_minecraft_server() {
 
     log_info "Starting Minecraft server..."
 
+    log_info "Step 1"
     start_java_server
 
+    log_info "Step 2"
     wait_until_server_ready
 
+    log_info "Step 3"
     save_server_pid "$SERVER_PID"
 
     save_server_started_time
-
+    log_info "Step 4"
     set_server_state "$STATE_RUNNING"
+
+    log_info "Step 5"
+    start_runtime_services
+
+    log_info "Step 6"
+    wait_process_exit "$SERVER_PID"
+    log_info "Step 7"
 }
 
 start_java_server() {
@@ -62,6 +74,14 @@ stop_server() {
     log_info "Stopping Minecraft server..."
 
     stop_server_command
+
+}
+
+wait_process_exit() {
+
+    PID="$1"
+
+    wait "$PID"
 
 }
 
@@ -204,6 +224,7 @@ bootstrap_server() {
     # start_java_server
     start_minecraft_server #DONE
 
+    
     wait_until_bootstrap_ready
 
     stop_bootstrap_server

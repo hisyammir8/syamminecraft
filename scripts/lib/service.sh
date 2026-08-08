@@ -35,6 +35,12 @@ stop_service() {
 
     SERVICE_NAME="$1"
 
+    PID=$(get_service_pid "$SERVICE_NAME") || return 0
+
+    terminate_process "$PID"
+
+    remove_service_pid "$SERVICE_NAME"
+
 }
 
 restart_service() {
@@ -88,10 +94,18 @@ terminate_process() {
 
     PID="$1"
 
+    kill "$PID"
+
 }
 
 wait_process_exit() {
 
     PID="$1"
+
+}
+
+wait_interval() {
+
+    sleep "$1"
 
 }

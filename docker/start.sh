@@ -5,10 +5,20 @@ set -e
 . /usr/local/bin/scripts/lib/log.sh
 . /usr/local/bin/scripts/lib/common.sh
 . /usr/local/bin/scripts/lib/process.sh
+. /usr/local/bin/scripts/lib/service.sh
 
 echo "================================="
 echo "Minecraft Server Startup"
 echo "================================="
+
+start_runtime_services() {
+
+    start_service \
+        metrics \
+        sh \
+        /usr/local/bin/scripts/metrics-service.sh
+
+}
 
 main() {
 
