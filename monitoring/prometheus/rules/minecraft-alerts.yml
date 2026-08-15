@@ -1,0 +1,93 @@
+groups:
+  - name: minecraft
+    rules:
+
+      - alert: MinecraftDown
+        expr: minecraft_up{instance="minecraft-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: minecraft
+        annotations:
+          summary: "Minecraft server is down"
+          description: "Minecraft server instance {{ $labels.instance }} has been down for more than 1 minute."
+
+      - alert: MinecraftUnhealthy
+        expr: minecraft_health{instance="minecraft-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: minecraft
+        annotations:
+          summary: "Minecraft server is unhealthy"
+          description: "Minecraft server instance {{ $labels.instance }} has been unhealthy for more than 1 minute."
+
+      - alert: MinecraftProcessDown
+        expr: minecraft_process_running{instance="minecraft-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: minecraft
+        annotations:
+          summary: "Minecraft process is not running"
+          description: "Minecraft server process on {{ $labels.instance }} has not been running for more than 1 minute."
+
+      - alert: MinecraftResourceWarning
+        expr: minecraft_resource_warning{instance="minecraft-server"} == 1
+        for: 5m
+        labels:
+          severity: warning
+          service: minecraft
+        annotations:
+          summary: "Minecraft resource usage is high"
+          description: "Minecraft server instance {{ $labels.instance }} has been in resource warning state for more than 5 minutes."
+
+      - alert: MinecraftResourceCritical
+        expr: minecraft_resource_critical{instance="minecraft-server"} == 1
+        for: 1m
+        labels:
+          severity: critical
+          service: minecraft
+        annotations:
+          summary: "Minecraft resource usage is critical"
+          description: "Minecraft server instance {{ $labels.instance }} has been in critical resource state for more than 1 minute."
+
+      - alert: MinecraftCPUHigh
+        expr: minecraft_cpu_usage_percent{instance="minecraft-server"} >= 80
+        for: 5m
+        labels:
+          severity: warning
+          service: minecraft
+        annotations:
+          summary: "Minecraft CPU usage is high"
+          description: "Minecraft server instance {{ $labels.instance }} CPU usage has been above 80% for more than 5 minutes."
+
+      - alert: MinecraftMemoryHigh
+        expr: (minecraft_memory_used_mb{instance="minecraft-server"} / minecraft_memory_total_mb{instance="minecraft-server"}) * 100 >= 80
+        for: 5m
+        labels:
+          severity: warning
+          service: minecraft
+        annotations:
+          summary: "Minecraft memory usage is high"
+          description: "Minecraft server instance {{ $labels.instance }} memory usage has been above 80% for more than 5 minutes."
+
+      - alert: MinecraftDiskLow
+        expr: (minecraft_disk_total_mb{instance="minecraft-server"} - minecraft_disk_used_mb{instance="minecraft-server"}) <= 10240
+        for: 5m
+        labels:
+          severity: warning
+          service: minecraft
+        annotations:
+          summary: "Minecraft disk space is low"
+          description: "Minecraft server instance {{ $labels.instance }} has less than 10 GB of free disk space for more than 5 minutes."
+
+      - alert: MinecraftExporterDown
+        expr: up{job="minecraft", instance="minecraft-server"} == 0
+        for: 1m
+        labels:
+          severity: critical
+          service: minecraft
+        annotations:
+          summary: "Minecraft metrics exporter is down"
+          description: "Minecraft metrics exporter for {{ $labels.instance }} has been unreachable for more than 1 minute."
