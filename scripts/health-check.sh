@@ -16,7 +16,7 @@ main() {
 
     fi
 
-    if ! is_server_ready; then
+    if ! is_server_state "$STATE_RUNNING"; then
 
         log_error "Minecraft server is not ready."
 

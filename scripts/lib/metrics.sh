@@ -22,8 +22,6 @@ read_metric() {
 
 }
 
-update_metric()
-
 create_placeholder_metric() {
 
     FILE="$1"
@@ -146,8 +144,71 @@ collect_system_metrics() {
 
 }
 
-write_server_metrics(){
-  log_info "Writing server metrics..."
+write_server_metrics() {
+
+    log_info "Writing server metrics..."
+
+    local list_output
+    local version_output
+    local online_players
+    local max_players
+    local version
+    local timestamp
+
+    # -----------------------------------------------
+    # Player information
+    # -----------------------------------------------
+
+    list_output=$(rcon_command "list" 2>/dev/null || true)
+
+    online_players=$(printf '%s\n' "$list_output" |
+        sed -n 's/.*There are \([0-9][0-9]*\) of a max of \([0-9][0-9]*\) players online:.*/\1/p' |
+        head -1)
+
+    max_players=$(printf '%s\n' "$list_output" |
+        sed -n 's/.*There are \([0-9][0-9]*\) of a max of \([0-9][0-9]*\) players online:.*/\2/p' |
+        head -1)
+
+    # -----------------------------------------------
+    # Server version
+    # -----------------------------------------------
+
+    version_output=$(rcon_command "version" 2>/dev/null || true)
+
+    version=$(printf '%s\n' "$version_output" |
+        sed -n 's/.*Paper version \([^ ]*\).*/\1/p' |
+        head -1)
+
+    # -----------------------------------------------
+    # Fallback values
+    # -----------------------------------------------
+
+    [ -z "$online_players" ] && online_players=0
+    [ -z "$max_players" ] && max_players=0
+    [ -z "$version" ] && version="unknown"
+
+    timestamp=$(date -u +"%Y-%m-%dT%H:%M:%SZ")
+
+    # -----------------------------------------------
+    # Write metrics
+    # -----------------------------------------------
+
+    cat > "$SERVER_METRICS" <<EOF
+{
+    "status": "running",
+    "version": "$version",
+    "motd": "",
+    "onlinePlayers": $online_players,
+    "maxPlayers": $max_players,
+    "whitelist": false,
+    "difficulty": "",
+    "gamemode": "",
+    "world": "",
+    "lastUpdated": "$timestamp"
+}
+EOF
+
+    log_info "Server metrics written successfully."
 }
 
 write_system_metrics() {

@@ -21,3 +21,79 @@ services:
     platform: linux/amd64
     
     stop_grace_period: 60s
+
+  metrics-exporter:
+    build:
+      context: ./monitoring/metrics-exporter
+    container_name: minecraft-metrics-exporter
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:9100:9100"
+
+    volumes:
+      - ./runtime/metrics:/runtime/metrics:ro
+      - /var/lib/minecraft-health/state:/var/lib/minecraft-health/state:ro
+      - /var/lib/minecraft-health/resource.state:/var/lib/minecraft-health/resource.state:ro
+
+    environment:
+      INSTANCE_NAME: minecraft-server
+      METRICS_DIR: /runtime/metrics
+      HEALTH_STATE_FILE: /var/lib/minecraft-health/state
+      RESOURCE_STATE_FILE: /var/lib/minecraft-health/resource.state
+
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: minecraft-prometheus
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:9090:9090"
+
+    volumes:
+      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./monitoring/prometheus/rules:/etc/prometheus/rules:ro
+      - prometheus-data:/prometheus
+
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.path=/prometheus"
+      - "--storage.tsdb.retention.time=15d"
+      - "--web.enable-lifecycle"
+
+    networks:
+      - default
+
+  alertmanager:
+    image: prom/alertmanager:latest
+    container_name: minecraft-alertmanager
+    restart: unless-stopped
+
+    ports:
+      - "127.0.0.1:9093:9093"
+
+    volumes:
+      - ./monitoring/alertmanager/alertmanager.yml:/etc/alertmanager/alertmanager.yml:ro
+      - ./monitoring/alertmanager/secrets/discord-webhook-url:/etc/alertmanager/secrets/discord-webhook-url:ro
+      - alertmanager-data:/alertmanager
+
+    command:
+      - "--config.file=/etc/alertmanager/alertmanager.yml"
+      - "--storage.path=/alertmanager"
+
+  grafana:
+    image: grafana/grafana:latest
+    container_name: minecraft-grafana
+    restart: unless-stopped
+    ports:
+      - "127.0.0.1:3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana
+    depends_on:
+      - prometheus
+
+
+volumes:
+  prometheus-data:
+  grafana-data:
+  alertmanager-data:
