@@ -30,6 +30,11 @@ case "$STATUS" in
 
     FAILED)
 
+        if [ "$CURRENT_STATE" = "FAILED" ]; then
+            echo "No failure alert required. Current state: FAILED"
+            exit 0
+        fi
+
         MESSAGE=$(printf '🔴 **Minecraft Server Alert**\nHealth check FAILED.\nTime: %s' "$TIMESTAMP")
 
         PAYLOAD=$(printf '%s' "$MESSAGE" | python3 -c '
